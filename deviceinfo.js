@@ -92,4 +92,7 @@ module.exports = {
   getCarrier: function() {
     return RNDeviceInfo.carrier;
   },
+  deviceCheckToken: function () {
+    return RNDeviceInfo.deviceCheckToken;
+  },
 };

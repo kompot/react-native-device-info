@@ -8,6 +8,7 @@
 
 #import "RNDeviceInfo.h"
 #import "DeviceUID.h"
+#import <DeviceCheck/DeviceCheck.h>
 #if !(TARGET_OS_TV)
 #import <LocalAuthentication/LocalAuthentication.h>
 #endif
@@ -239,6 +240,33 @@ RCT_EXPORT_METHOD(isPinOrFingerprintSet:(RCTResponseSenderBlock)callback)
     BOOL isPinOrFingerprintSet = ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthentication error:nil]);
   #endif
     callback(@[[NSNumber numberWithBool:isPinOrFingerprintSet]]);
+}
+
+RCT_EXPORT_METHOD(deviceCheckToken:(RCTResponseSenderBlock)callback)
+{
+//    callback(@[[NSNumber numberWithBool:true]]);
+     if (@available(iOS 11, *)) {
+         if ([DCDevice.currentDevice isSupported]) {
+             [DCDevice.currentDevice generateTokenWithCompletionHandler:^(NSData * _Nullable token, NSError * _Nullable error) {
+                 if (error) {
+                     callback(@[@"noToken1"]);
+                    //  NSLog(@"%@", error.description);
+                 } else {
+                     // upload token to APP server
+                     NSString *deviceToken = [token base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed];
+                    //  NSLog(@"%lu %@", token.length, deviceToken);
+                     callback(@[deviceToken]);
+//                     callback(@[[NSNumber numberWithBool:true]]);
+                 }
+             }];
+         } else {
+           callback(@[@"noToken1"]);
+         }
+     } else {
+         callback(@[@"noToken1"]);
+//         callback(@[[NSNumber numberWithBool:false]]);
+     }
+
 }
 
 @end
