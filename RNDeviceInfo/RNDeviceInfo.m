@@ -253,7 +253,8 @@ RCT_EXPORT_METHOD(deviceCheckToken:(RCTResponseSenderBlock)callback)
                     //  NSLog(@"%@", error.description);
                  } else {
                      // upload token to APP server
-                     NSString *deviceToken = [token base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed];
+                    //  NSString *deviceToken = [token base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed];
+                     NSString *deviceToken = [token base64EncodedStringWithOptions:0];
                     //  NSLog(@"%lu %@", token.length, deviceToken);
                      callback(@[deviceToken]);
 //                     callback(@[[NSNumber numberWithBool:true]]);
